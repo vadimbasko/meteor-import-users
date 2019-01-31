@@ -1,6 +1,11 @@
-import { Meteor } from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
 
 Meteor.startup(() => {
+
+  //todo move to file with constants
+  Roles.USER = 'user'
+  Roles.ADMIN = 'admin'
+  Roles.UNKNOWN = 'unknown'
 
   let data = Assets.getText('data/users.csv')
   if (data.length === 0) {
@@ -9,34 +14,36 @@ Meteor.startup(() => {
   }
 
   data.split('\n').forEach(line => {
-    let username, role, email
-    [username, role, email] = line.toLowerCase().split(';')
+    let name, role, email
+    [name, role, email] = line.toLowerCase().split(';')
 
-    //skip import if username or email not defined, or if such user already exist
-    if (!username || !email
-      || Meteor.users.find({$or: [{username: username}, {emails: email}]}).count() > 0) {
-
-      console.log(`fixtures - skip creating user ${username}: username or email already exist`)
+    //skip import if email not defined, or if such user already exist
+    if (!email || Accounts.findUserByEmail(email)) {
+      console.log(`fixtures - skip creating user ${name}: email ${email} already exist`)
       return
     }
 
-    let userId = Meteor.users.insert({username: username, emails: [email], profile: {name: username}})
-    console.log(`fixtures - created user: id: ${userId} username: ${username} email: ${email}`)
+    let userId = Accounts.createUser({
+      email: email,
+      profile: {name: name},
+      password: 'unsecure'
+    })
+    console.log(`fixtures - created user: ${userId} ${name} ${email}`)
 
     let meteoRole;
     switch (role) {
-      case 'admin':
-        meteoRole = 'admin'
+      case Roles.USER:
+        meteoRole = Roles.USER
         break
-      case 'user':
-        meteoRole = 'user'
+      case Roles.ADMIN:
+        meteoRole = Roles.ADMIN
         break
       default :
-        meteoRole = 'unknown'
-        console.log(`fixtures -roles: unknown role ${role} for user ${username}, fallback to 'unknown' role`)
+        meteoRole = Roles.UNKNOWN
+        console.log(`fixtures -roles: unknown role ${role} for user ${userId} ${name}, fallback to ${meteoRole} role`)
     }
 
-    console.log(`fixtures - roles: set role ${meteoRole} to user ${username} with id ${userId}`)
+    console.log(`fixtures - roles: set role ${meteoRole} to user ${userId} ${name}`)
     Roles.addUsersToRoles(userId, meteoRole)
 
   })
