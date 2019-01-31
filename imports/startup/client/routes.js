@@ -1,33 +1,57 @@
-Router.route('/login', function () {
+FlowRouter.wait();
 
-  let user = Meteor.user()
-  console.log(`router - login: user is `, user)
+Tracker.autorun(() => {
+  // wait on roles to intialise so we can check is use is in proper role
+  if (Roles.subscription.ready() && !FlowRouter._initialized) {
+    FlowRouter.initialize()
+  }
+});
 
-  if (user) {
+FlowRouter.route('/login', {
 
-    if (Roles.userIsInRole(user, ['admin'])) {
-      this.redirect('/admin/users')
-      return
+  action: function () {
+
+    let user = Meteor.user()
+    console.log(`router - login: user is `, user)
+
+    if (user) {
+
+      if (Roles.userIsInRole(user, ['admin'])) {
+        FlowRouter.go('/admin/users')
+        return
+      }
+
+      if (Roles.userIsInRole(user, ['user'])) {
+        FlowRouter.go('/profile')
+        return
+      }
     }
 
-    if (Roles.userIsInRole(user, ['user'])) {
-      this.redirect('/profile')
-      return
-    }
+    BlazeLayout.render('login');
   }
 
-  this.render('login')
-
 })
 
-Router.route('/logout', function () {
-  Meteor.logout(() => this.redirect('/login'))
+FlowRouter.route('/admin/users', {
+  action: function() {
+    BlazeLayout.render('admin/users');
+  }
 })
 
-Router.route('/admin/users')
+FlowRouter.route('/profile', {
+  action: function() {
+    BlazeLayout.render('profile');
+  }
+})
 
-Router.route('/profile')
+FlowRouter.route('/logout', {
+  action: function() {
+    Meteor.logout(() => { FlowRouter.go('/login') })
+  }
+})
 
-Router.route('/(.*)', function () {
-  this.redirect('/login')
+FlowRouter.route('/(.*)', {
+  action: () => {
+    FlowRouter.redirect('/login')
+  }
 })

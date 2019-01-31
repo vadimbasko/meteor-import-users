@@ -11,6 +11,9 @@ Template.login.events({
       if (err) {
         console.log(`Error login ${email}`, err)
         alert(err.reason)
+      } else {
+        console.log(`login success`, Meteor.user())
+        FlowRouter.go('/')
       }
     });
   }
