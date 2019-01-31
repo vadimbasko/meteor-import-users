@@ -35,7 +35,7 @@ FlowRouter.route('/login', {
 FlowRouter.route('/admin/users', {
   action: function() {
     if (Roles.userIsInRole(Meteor.user(), ['admin'])) {
-      BlazeLayout.render('admin/users');
+      BlazeLayout.render('adminUsers');
     } else {
       FlowRouter.go('/')
     }
