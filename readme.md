@@ -22,6 +22,7 @@ After server started you can login to app via imported user at http://localhost:
 Credentials 
 * for admin role - login: 'bilbo@example.com' password: 'unsecure'
 * for user role - login 'sam@example.com' password: 'unsecure'
+Or any other user from users.csv.
 
 After login for 'user' role available pages are
 * http://localhost:3000/profile
