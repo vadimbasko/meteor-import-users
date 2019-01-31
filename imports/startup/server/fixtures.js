@@ -15,7 +15,9 @@ Meteor.startup(() => {
 
   data.split('\n').forEach(line => {
     let name, role, email
-    [name, role, email] = line.toLowerCase().split(';')
+    [name, role, email] = line.split(';')
+    email = email.toLowerCase()
+    role = role.toLowerCase()
 
     //skip import if email not defined, or if such user already exist
     if (!email || Accounts.findUserByEmail(email)) {
