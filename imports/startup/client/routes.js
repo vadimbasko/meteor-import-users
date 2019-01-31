@@ -1,5 +1,3 @@
-Router.route('/', {template: 'hello'})
-
 Router.route('/login', function () {
 
   let user = Meteor.user()
