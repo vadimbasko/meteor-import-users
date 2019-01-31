@@ -34,14 +34,21 @@ FlowRouter.route('/login', {
 
 FlowRouter.route('/admin/users', {
   action: function() {
-    BlazeLayout.render('admin/users');
+    if (Roles.userIsInRole(Meteor.user(), ['admin'])) {
+      BlazeLayout.render('admin/users');
+    } else {
+      FlowRouter.go('/')
+    }
   }
 })
 
 FlowRouter.route('/profile', {
   action: function() {
-    BlazeLayout.render('profile');
-  }
+    if (Roles.userIsInRole(Meteor.user(), ['admin', 'user'])) {
+      BlazeLayout.render('profile');
+    } else {
+      FlowRouter.go('/')
+    }  }
 })
 
 FlowRouter.route('/logout', {
