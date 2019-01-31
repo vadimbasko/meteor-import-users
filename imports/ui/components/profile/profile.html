@@ -1,6 +1,24 @@
 <template name="profile">
-    <h2>Pofile</h2>
-     User: {{ userProfile.name }}
-     <br>
-     Email: {{ userProfile.email }}
+
+  <div class="container p-5">
+    <h3>Pofile</h3>
+    <div class="row pt-3">
+      <div class="col-3">
+        <img src="http://placehold.it/150" alt=""  />
+      </div>
+      <div class="col">
+        <div class="row pt-3">
+          <div class="col-1">Name</div>
+          <div class="col">{{ userProfile.name }}</div>
+        </div>
+        <div class="row pt-3">
+          <div class="col-1">Email</div>
+          <div class="col">{{ userProfile.email }}</div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
 </template>
+

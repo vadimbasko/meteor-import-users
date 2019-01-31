@@ -1,6 +1,21 @@
 <template name="adminUsers">
-    <h2>Users</h2>
-    {{#each users}}
-        <li>{{profile.name}} {{email}} {{roles}}</li>
-    {{/each}}
+
+  <div class="container p-5">
+    <h3>Users</h3>
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each users}}
+      <tr><td>{{profile.name}} </td><td> {{email}} </td><td> {{roles}}</td></tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </div>
+
 </template>
