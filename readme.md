@@ -11,6 +11,7 @@ git clone git@github.com:vadimbasko/meteor-import-users.git
 * Start app
 ```
 cd meteor-import-users
+meteor npm install
 meteor
 ```
 
