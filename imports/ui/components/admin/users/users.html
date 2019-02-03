@@ -11,8 +11,8 @@
       </tr>
       </thead>
       <tbody>
-      {{#each users}}
-      <tr><td>{{profile.name}} </td><td> {{email}} </td><td> {{roles}}</td></tr>
+      {{#each allUsers}}
+      <tr><td>{{profile.name}} </td><td> {{emails.[0].address}} </td><td> {{roles}}</td></tr>
       {{/each}}
       </tbody>
     </table>
